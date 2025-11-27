@@ -26,12 +26,15 @@ int main()
 	printf("1: Mapped shared memory at address %p\n", shared_memory);
 
 	//TODO 1: Allocate a binary semaphore
+	sem_id = binary_semaphore_allocate(key, S_IRUSR | S_IWUSR);
 	printf("1: Semaphore created with id: %d\n", sem_id);
 
 	//TODO 2: Initialize the semaphore to 1
+	binary_semaphore_set(sem_id);
 	printf("1: Semaphore set to 1\n");
 
 	//TODO 3: Wait call
+	binary_semaphore_wait(sem_id);
 	printf("1: Wait call returned\n");
 
 	sprintf(shared_memory, "Hi how r you?");
@@ -39,15 +42,18 @@ int main()
 	sleep(30);
 
 	//TODO 4: Post call */
+	binary_semaphore_post(sem_id);
 	printf("1: Post call returned\n");
 
 	//TODO 5: Wait call */
+	binary_semaphore_wait(sem_id);
 	printf("1: Wait call returned\n");	
 
 	/* Print out the string from shared memory */
 	printf("1: Shared memory has \"%s\"\n", shared_memory);
 
 	//TODO 6: Post Call
+	binary_semaphore_post(sem_id);
 	printf("1: Post call returned\n");
 
 	/* Detach the shared memory segment */

@@ -26,8 +26,7 @@ int main()
 	printf("2: Mapped shared memory at address %p\n", shared_memory);
 
 	/* Getting a binary semaphore */
-	//TODO 1: Access a binary semaphore created by sem_one
-	if (sem_id < 0)
+	if ((sem_id = binary_semaphore_get(key, S_IRUSR | S_IWUSR)) < 0)
 	{
 		perror("sem_get");
 		printf("2: Semaphore connect failed\n");
@@ -41,7 +40,8 @@ int main()
 		printf("2: Semaphore connected\n");
 	}
 
-	//TODO 2: Wait call
+	/* Wait call */
+	binary_semaphore_wait(sem_id);
 	printf("2: Wait call returned\n");
 
 	/* Print out the string from shared memory */
@@ -52,12 +52,15 @@ int main()
 	printf("2: Message posted and timepass for a 6 secs\n");
 	sleep(6);
 
-	//TODO 3: Post call */
+	/* Post Call */
+	binary_semaphore_post(sem_id);
 	printf("2: Post call returned\n");
 
-	//TODO 4: Freeing the binary semaphore
+	/* Freeing the binary semaphore */
+	binary_semaphore_deallocate(sem_id);
 	printf("2: Semaphore freed\n");
 
+	/* Detach the shared memory segment */
 	shmdt(shared_memory);
 	printf("2: Unmapped shared memory\n");
 	sleep(2);
